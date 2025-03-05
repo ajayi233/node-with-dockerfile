@@ -7,6 +7,7 @@ on:
 
 env:
   AWS_REGION: us-east-1
+  ECR_PUBLIC_REGISTRY: public.ecr.aws
   ECR_REPOSITORY: week4ecr # Replace with your ECR repository name
 
 jobs:
@@ -27,8 +28,8 @@ jobs:
           aws-region: us-east-1
 
       - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+        run: |
+          aws ecr-public get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin public.ecr.aws
 
       - name: Build, tag, and push image to Amazon ECR
         id: build-image
@@ -38,6 +39,6 @@ jobs:
           IMAGE_NAME: lotsu-daniel-ajayi_anime-app
         run: |
           # Build a docker container and push it to ECR
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_NAME .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_NAME
-          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_NAME" >> $GITHUB_OUTPUT
+          docker build -t $ECR_PUBLIC_REGISTRY/$ECR_REPOSITORY:$IMAGE_NAME .
+          docker push $ECR_PUBLIC_REGISTRY/$ECR_REPOSITORY:$IMAGE_NAME
+          echo "image=$ECR_REGISTRY/$ECR_PUBLIC_REPOSITORY:$IMAGE_NAME" >> $GITHUB_OUTPUT
