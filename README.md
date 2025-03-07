@@ -44,6 +44,18 @@ The GitHub Actions workflow does the following:
 6. Tags image with commit SHA
 7. Pushes image to ECR repository
 
+## Docker Build
+
+To build docker image, run the following command:
+
+````bash
+docker build -t mydocker .
+
+To run the docker image, run the following command:
+
+```bash
+docker run -p 5000:5000 mydocker
+
 ## Local Development
 
 ```bash
@@ -52,4 +64,4 @@ npm install
 
 # Run the application
 npm start
-```
+````
